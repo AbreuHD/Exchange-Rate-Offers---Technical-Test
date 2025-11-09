@@ -1,6 +1,6 @@
-﻿namespace Core.Application.Dtos
+﻿namespace Core.Domain.Entities
 {
-    public class ExanchangeResponse
+    public class ExchangeResults
     {
         public string ProviderName { get; set; } = string.Empty;
         public decimal Rate { get; set; }

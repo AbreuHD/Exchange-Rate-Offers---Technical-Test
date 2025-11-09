@@ -1,10 +1,9 @@
-﻿using Core.Application.Dtos;
-using Core.Application.Dtos.Generic;
+﻿using Core.Domain.Entities;
 
 namespace Core.Domain.Interfaces
 {
     public interface IExchangeProvider
     {
-        Task<GenericApiResponse<ExanchangeResponse>> GetExchangeRateAsync(string fromCurrency, string toCurrency);
+        Task<ExchangeResults> GetExchangeRateAsync(string from, string to, decimal amount);
     }
 }
