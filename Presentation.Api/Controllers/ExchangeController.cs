@@ -1,6 +1,5 @@
 ﻿using Core.Application.Dtos;
 using Core.Application.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Api.Controllers
@@ -15,7 +14,7 @@ namespace Presentation.Api.Controllers
         public async Task<IActionResult> GetBestRate([FromQuery] ExchangeRequest request)
         {
             var result = await _exchangeService.GetBestRateAsync(request.From, request.To, request.Amount);
-            return Ok(result);
+            return StatusCode(result.Statuscode, result);
         }
     }
 }

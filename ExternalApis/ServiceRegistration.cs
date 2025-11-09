@@ -12,6 +12,9 @@ namespace Infrastructure.ExternalApis
             services.AddHttpClient<IExchangeProvider, FrankfurterService>(c =>
                 c.BaseAddress = new Uri("https://api.frankfurter.app"));
 
+            services.AddHttpClient<IExchangeProvider, FloatratesService>(c =>
+                c.BaseAddress = new Uri("https://www.floatrates.com"));
+
             services.AddScoped<ExchangeService>();
         }
     }

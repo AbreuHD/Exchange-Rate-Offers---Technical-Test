@@ -1,4 +1,5 @@
-﻿using Core.Domain.Entities;
+﻿using Core.Domain.Common;
+using Core.Domain.Entities;
 using Core.Domain.Interfaces;
 
 namespace Core.Application.Services
@@ -7,15 +8,22 @@ namespace Core.Application.Services
     {
         private readonly IEnumerable<IExchangeProvider> _providers = providers;
 
-        public async Task<ExchangeResults?> GetBestRateAsync(string from, string to, decimal amount)
+        public async Task<GenericResponse<ExchangeResults?>> GetBestRateAsync(string from, string to, decimal amount)
         {
             var tasks = _providers.Select(p => p.GetExchangeRateAsync(from, to, amount));
             var results = await Task.WhenAll(tasks);
 
-            return results
-                .Where(r => r != null)
-                .OrderByDescending(r => r!.ConvertedAmount)
+            var response = results
+                .Where(r => r?.Payload != null)
+                .OrderByDescending(r => r!.Payload!.ConvertedAmount)
                 .FirstOrDefault();
+
+            return response ?? new GenericResponse<ExchangeResults?>
+            {
+                Payload = null,
+                Statuscode = 404,
+                Message = "No valid exchange rate found."
+            };
         }
     }
 }

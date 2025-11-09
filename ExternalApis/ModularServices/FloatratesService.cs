@@ -6,36 +6,37 @@ using System.Net.Http.Json;
 
 namespace Infrastructure.ExternalApis.ModularServices
 {
-    public class FrankfurterService(HttpClient httpClient, ILogger<FrankfurterService> logger) : IExchangeProvider
+    public class FloatratesService(HttpClient httpClient, ILogger<FloatratesService> logger) : IExchangeProvider
     {
         private readonly HttpClient _httpClient = httpClient;
-        private readonly ILogger<FrankfurterService> _logger = logger;
+        private readonly ILogger<FloatratesService> _logger = logger;
 
         public async Task<GenericResponse<ExchangeResults?>> GetExchangeRateAsync(string from, string to, decimal amount)
         {
             try
             {
-                var apiResponse = await _httpClient.GetAsync($"/latest?from={from}&to={to}");
+                var apiResponse = await _httpClient.GetAsync($"/daily/{from}.json");
 
                 if (!apiResponse.IsSuccessStatusCode)
                 {
-                    _logger.LogWarning("FrankfurterService returned non-success status: {StatusCode}", apiResponse.StatusCode);
+                    _logger.LogWarning("FloatratesService returned non-success status: {StatusCode}", apiResponse.StatusCode);
                     return new GenericResponse<ExchangeResults?>
                     {
-                        Message = "Failed to retrieve exchange rate from FrankfurterService.",
+                        Message = "Failed to retrieve exchange rate from FloatratesService.",
                         Statuscode = (int)apiResponse.StatusCode,
                         Payload = null
                     };
                 }
 
-                var data = await apiResponse.Content.ReadFromJsonAsync<ExchangeApiResponse>();
+                var data = await apiResponse.Content.ReadFromJsonAsync<Dictionary<string, ExchangeApiResponse>>();
 
-                if (data == null || !data.Rates.TryGetValue(to, out var rate))
+
+                if (data == null || !data.TryGetValue(to.ToLower(), out var currency))
                 {
-                    _logger.LogWarning("FrankfurterService returned an invalid JSON structure or missing rate.");
+                    _logger.LogWarning("FloatratesService returned an invalid JSON structure or missing rate.");
                     return new GenericResponse<ExchangeResults?>
                     {
-                        Message = "Invalid response structure from FrankfurterService.",
+                        Message = "Invalid response structure from FloatratesService.",
                         Statuscode = 500,
                         Payload = null
                     };
@@ -45,9 +46,9 @@ namespace Infrastructure.ExternalApis.ModularServices
                 {
                     Payload = new ExchangeResults
                     {
-                        ProviderName = "FrankfurterService",
-                        Rate = rate,
-                        ConvertedAmount = amount * rate
+                        ProviderName = "FloatratesService",
+                        Rate = currency.Rate,
+                        ConvertedAmount = amount * currency.Rate
                     },
                     Statuscode = 200,
                     Message = "Success"
@@ -55,10 +56,10 @@ namespace Infrastructure.ExternalApis.ModularServices
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error while calling FrankfurterService.");
+                _logger.LogError(ex, "Error while calling FloatratesService.");
                 return new GenericResponse<ExchangeResults?>
                 {
-                    Message = "An error occurred while retrieving exchange rate from FrankfurterService.",
+                    Message = "An error occurred while retrieving exchange rate from FloatratesService.",
                     Statuscode = 500,
                     Payload = null
                 };
@@ -66,10 +67,8 @@ namespace Infrastructure.ExternalApis.ModularServices
         }
         private sealed class ExchangeApiResponse
         {
-            public decimal Amount { get; set; }
-            public string Base { get; set; } = string.Empty;
-            public string Date { get; set; } = string.Empty;
-            public Dictionary<string, decimal> Rates { get; set; } = [];
+            public string Code { get; set; }
+            public decimal Rate { get; set; }
         }
     }
 }
