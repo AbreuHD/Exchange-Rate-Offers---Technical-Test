@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/Core/" />
+  <Folder Name="/Infraestructure/" />
+  <Folder Name="/Presentation/">
+    <Project Path="Presentation.Api/Presentation.Api.csproj" Id="950bc742-a18b-4131-8e97-5f09edbc65e8" />
+  </Folder>
+  <Folder Name="/Test/" />
+</Solution>
