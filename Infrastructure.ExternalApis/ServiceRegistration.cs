@@ -2,6 +2,7 @@
 using Core.Domain.Interfaces;
 using Infrastructure.ExternalApis.ModularServices;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.ExternalApis
 {
@@ -9,13 +10,15 @@ namespace Infrastructure.ExternalApis
     {
         public static void AddInfrastructureServices(this IServiceCollection services)
         {
-            services.AddHttpClient<IExchangeProvider, FrankfurterService>(c =>
-                c.BaseAddress = new Uri("https://api.frankfurter.app"));
+            services.AddScoped<IExchangeProvider>(sp =>
+                new FrankfurterService(new HttpClient { BaseAddress = new Uri("https://api.frankfurter.app/") },
+                                       sp.GetRequiredService<ILogger<FrankfurterService>>()));
 
-            services.AddHttpClient<IExchangeProvider, FloatratesService>(c =>
-                c.BaseAddress = new Uri("https://www.floatrates.com"));
+            services.AddScoped<IExchangeProvider>(sp =>
+                new FloatratesService(new HttpClient { BaseAddress = new Uri("https://www.floatrates.com/") },
+                                      sp.GetRequiredService<ILogger<FloatratesService>>()));
 
-            services.AddScoped<ExchangeService>();
+            services.AddScoped<IExchangeService, ExchangeService>();
         }
     }
 }
