@@ -45,6 +45,7 @@ namespace Infrastructure.ExternalApis.ModularServices
                 {
                     Payload = new ExchangeResults
                     {
+                        ExchangePair = $"{from}/{to}",
                         ProviderName = "FrankfurterService",
                         Rate = rate,
                         ConvertedAmount = amount * rate

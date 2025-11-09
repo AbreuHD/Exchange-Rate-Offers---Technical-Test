@@ -1,4 +1,4 @@
-﻿namespace Core.Application.Dtos
+﻿namespace Core.Domain.Common
 {
     public class ExchangeRequest
     {

@@ -8,9 +8,9 @@ namespace Core.Application.Services
     {
         private readonly IEnumerable<IExchangeProvider> _providers = providers;
 
-        public async Task<GenericResponse<ExchangeResults?>> GetBestRateAsync(string from, string to, decimal amount)
+        public async Task<GenericResponse<ExchangeResults?>> GetBestRateAsync(ExchangeRequest request)
         {
-            var tasks = _providers.Select(p => p.GetExchangeRateAsync(from, to, amount));
+            var tasks = _providers.Select(p => p.GetExchangeRateAsync(request.From, request.To, request.Amount));
             var results = await Task.WhenAll(tasks);
 
             var response = results
@@ -26,9 +26,59 @@ namespace Core.Application.Services
             };
         }
 
-        public async Task<GenericResponse<List<ExchangeResults?>>> GetRatesAsync(string from, string to, decimal amount)
+        public async Task<GenericResponse<List<ExchangeResults?>>> GetBetterRatesAsync(List<ExchangeRequest> requests)
         {
-            var tasks = _providers.Select(p => p.GetExchangeRateAsync(from, to, amount));
+            if (requests == null || requests.Count == 0)
+            {
+                return new GenericResponse<List<ExchangeResults?>>
+                {
+                    Payload = null,
+                    Statuscode = 400,
+                    Message = "No exchange requests provided."
+                };
+            }
+
+            var allResults = new List<ExchangeResults?>();
+
+            var tasks = requests.Select(async request =>
+            {
+                var providerTasks = _providers.Select(p => p.GetExchangeRateAsync(request.From, request.To, request.Amount));
+                var providerResults = await Task.WhenAll(providerTasks);
+
+                var bestRate = providerResults
+                    .Where(r => r?.Payload != null)
+                    .OrderByDescending(r => r!.Payload!.ConvertedAmount)
+                    .FirstOrDefault();
+
+                return bestRate?.Payload;
+            });
+
+            var results = await Task.WhenAll(tasks);
+            allResults.AddRange(results.Where(r => r != null));
+
+            if (allResults.Count > 0)
+            {
+                return new GenericResponse<List<ExchangeResults?>>
+                {
+                    Payload = allResults,
+                    Statuscode = 200,
+                    Message = "Best rates retrieved successfully."
+                };
+            }
+            else
+            {
+                return new GenericResponse<List<ExchangeResults?>>
+                {
+                    Payload = null,
+                    Statuscode = 404,
+                    Message = "No valid exchange rates found."
+                };
+            }
+        }
+
+        public async Task<GenericResponse<List<ExchangeResults?>>> GetRatesAsync(ExchangeRequest request)
+        {
+            var tasks = _providers.Select(p => p.GetExchangeRateAsync(request.From, request.To, request.Amount));
             var results = await Task.WhenAll(tasks);
 
             var response = results
