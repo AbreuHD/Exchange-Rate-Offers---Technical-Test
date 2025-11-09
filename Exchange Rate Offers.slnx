@@ -4,7 +4,7 @@
     <Project Path="Core.Domain/Core.Domain.csproj" Id="30f71543-5001-4a05-88c6-975aa90dea7c" />
   </Folder>
   <Folder Name="/Infrastructure/">
-    <Project Path="ExternalApis/Infrastructure.ExternalApis.csproj" Id="829f2afe-a836-4dd6-bac1-e078ccb4704e" />
+    <Project Path="Infrastructure.ExternalApis/Infrastructure.ExternalApis.csproj" />
   </Folder>
   <Folder Name="/Presentation/">
     <Project Path="Presentation.Api/Presentation.Api.csproj" Id="950bc742-a18b-4131-8e97-5f09edbc65e8" />
