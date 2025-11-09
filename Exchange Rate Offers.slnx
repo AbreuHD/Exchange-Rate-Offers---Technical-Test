@@ -1,6 +1,11 @@
 <Solution>
-  <Folder Name="/Core/" />
-  <Folder Name="/Infraestructure/" />
+  <Folder Name="/Core/">
+    <Project Path="Core.Application/Core.Application.csproj" Id="b101b6b3-c690-473a-9f19-e8e513eaa86e" />
+    <Project Path="Core.Domain/Core.Domain.csproj" Id="30f71543-5001-4a05-88c6-975aa90dea7c" />
+  </Folder>
+  <Folder Name="/Infraestructure/">
+    <Project Path="ExternalApis/ExternalApis.csproj" Id="829f2afe-a836-4dd6-bac1-e078ccb4704e" />
+  </Folder>
   <Folder Name="/Presentation/">
     <Project Path="Presentation.Api/Presentation.Api.csproj" Id="950bc742-a18b-4131-8e97-5f09edbc65e8" />
   </Folder>
