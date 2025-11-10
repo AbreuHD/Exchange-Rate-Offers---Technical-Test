@@ -1,0 +1,97 @@
+version: '3.8'
+
+services:
+  firstapi:
+    image: exchange-rate-offers-firstapi:latest
+    build:
+      context: .
+      dockerfile: FirstApi.Presentation/Dockerfile
+    container_name: firstapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+    ports:
+      - "5150:8080"
+    networks:
+      - exchange-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/openapi/v1.json"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  secondapi:
+    image: exchange-rate-offers-secondapi:latest
+    build:
+      context: .
+      dockerfile: SecondApi.Presentation/Dockerfile
+    container_name: secondapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+    ports:
+      - "5042:8080"
+    networks:
+      - exchange-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  thirdapi:
+    image: exchange-rate-offers-thirdapi:latest
+    build:
+      context: .
+      dockerfile: ThirdApi.Presentation/Dockerfile
+    container_name: thirdapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+    ports:
+      - "5107:8080"
+    networks:
+      - exchange-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/openapi/v1.json"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  centralapi:
+    image: exchange-rate-offers-centralapi:latest
+    build:
+      context: .
+      dockerfile: CentralApi.Presentation.Api/Dockerfile
+    container_name: centralapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ApiEndpoints__FirstApi=http://firstapi:8080/
+      - ApiEndpoints__SecondApi=http://secondapi:8080/
+      - ApiEndpoints__ThirdApi=http://thirdapi:8080/
+    ports:
+      - "5260:8080"
+    networks:
+      - exchange-network
+    depends_on:
+      firstapi:
+        condition: service_healthy
+      secondapi:
+        condition: service_healthy
+      thirdapi:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/swagger/v1/swagger.json"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+networks:
+  exchange-network:
+    driver: bridge
+

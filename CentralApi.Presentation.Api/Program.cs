@@ -16,7 +16,7 @@ builder.Services.AddSwaggerGen(o =>
         Description = "This is just a simple technical test. This is what you want; I can do more and do it better, hire me and you'll see. 😛"
     });
 });
-builder.Services.AddInfrastructureServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
 
