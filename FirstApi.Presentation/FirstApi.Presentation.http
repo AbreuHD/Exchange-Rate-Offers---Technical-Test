@@ -1,0 +1,6 @@
+@FirstApi.Presentation_HostAddress = http://localhost:5150
+
+GET {{FirstApi.Presentation_HostAddress}}/api/exchange/Change?From=USD&To=DOP
+Accept: application/json
+
+###

@@ -1,0 +1,7 @@
+@ThirdApi.Presentation_HostAddress = http://localhost:5107
+
+GET {{ThirdApi.Presentation_HostAddress}}/api/changemoney/change?From=USD&To=DOP&QUANTITY=60
+Accept: application/json
+
+
+###

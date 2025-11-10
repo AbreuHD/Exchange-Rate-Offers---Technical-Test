@@ -18,6 +18,14 @@ namespace Infrastructure.ExternalApis
                 new FloatratesService(new HttpClient { BaseAddress = new Uri("https://www.floatrates.com/") },
                                       sp.GetRequiredService<ILogger<FloatratesService>>()));
 
+            services.AddScoped<IExchangeProvider>(sp =>
+                new FirstApiService(new HttpClient { BaseAddress = new Uri("http://localhost:5150/") },
+                                      sp.GetRequiredService<ILogger<FirstApiService>>()));
+
+            services.AddScoped<IExchangeProvider>(sp =>
+                new SecondApiService(new HttpClient { BaseAddress = new Uri("https://localhost:7142/") },
+                                      sp.GetRequiredService<ILogger<SecondApiService>>()));
+
             services.AddScoped<IExchangeService, ExchangeService>();
         }
     }
