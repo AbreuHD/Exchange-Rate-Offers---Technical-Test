@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Docker
+docker-compose.override.yml
+.docker/
+*.dockerignore.bak
+/exchange-rate-offers-all.tar

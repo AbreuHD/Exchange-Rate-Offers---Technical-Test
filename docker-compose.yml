@@ -1,0 +1,68 @@
+services:
+  firstapi:
+    image: exchange-rate-offers-firstapi:latest
+    build:
+      context: .
+      dockerfile: FirstApi.Presentation/Dockerfile
+    container_name: firstapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+    ports:
+      - "5150:8080"
+    networks:
+      - exchange-network
+
+  secondapi:
+    image: exchange-rate-offers-secondapi:latest
+    build:
+      context: .
+      dockerfile: SecondApi.Presentation/Dockerfile
+    container_name: secondapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+    ports:
+      - "5042:8080"
+    networks:
+      - exchange-network
+
+  thirdapi:
+    image: exchange-rate-offers-thirdapi:latest
+    build:
+      context: .
+      dockerfile: ThirdApi.Presentation/Dockerfile
+    container_name: thirdapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+    ports:
+      - "5107:8080"
+    networks:
+      - exchange-network
+
+  centralapi:
+    image: exchange-rate-offers-centralapi:latest
+    build:
+      context: .
+      dockerfile: CentralApi.Presentation.Api/Dockerfile
+    container_name: centralapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ApiEndpoints__FirstApi=http://firstapi:8080/
+      - ApiEndpoints__SecondApi=http://secondapi:8080/
+      - ApiEndpoints__ThirdApi=http://thirdapi:8080/
+    ports:
+      - "5260:8080"
+    networks:
+      - exchange-network
+    depends_on:
+      - firstapi
+      - secondapi
+      - thirdapi
+
+networks:
+  exchange-network:
+    driver: bridge
+
