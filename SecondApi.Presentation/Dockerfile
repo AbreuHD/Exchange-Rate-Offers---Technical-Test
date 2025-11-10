@@ -22,5 +22,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
 EXPOSE 8080
 COPY --from=publish /app/publish .
+COPY SecondApi.Presentation/IsoCodes.xml .
 ENTRYPOINT ["dotnet", "SecondApi.Presentation.dll"]
 
