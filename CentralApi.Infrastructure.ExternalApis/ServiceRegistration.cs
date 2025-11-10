@@ -26,6 +26,10 @@ namespace CentralApi.Infrastructure.ExternalApis
                 new SecondApiService(new HttpClient { BaseAddress = new Uri("https://localhost:7142/") },
                                       sp.GetRequiredService<ILogger<SecondApiService>>()));
 
+            services.AddScoped<IExchangeProvider>(sp =>
+                new ThirdApiService(new HttpClient { BaseAddress = new Uri("http://localhost:5107/") },
+                                      sp.GetRequiredService<ILogger<ThirdApiService>>()));
+
             services.AddScoped<IExchangeService, ExchangeService>();
         }
     }

@@ -15,7 +15,7 @@ namespace CentralApi.Infrastructure.ExternalApis.ModularServices
         {
             try
             {
-                var apiResponse = await _httpClient.GetAsync($"api/exchange/Change?From={from}&To={to}");
+                var apiResponse = await _httpClient.GetAsync($"api/changemoney/Change?From={from}&To={to}&Quantity={amount}");
 
                 if (!apiResponse.IsSuccessStatusCode)
                 {
