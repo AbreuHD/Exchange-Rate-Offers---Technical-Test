@@ -10,7 +10,7 @@ namespace CentralApi.Core.Application.Services
 
         public async Task<GenericResponse<ExchangeResults?>> GetBestRateAsync(ExchangeRequest request)
         {
-            var tasks = _providers.Select(p => p.GetExchangeRateAsync(request.From, request.To, request.Amount));
+            var tasks = _providers.Select(p => p.GetExchangeRateAsync(request.From.ToUpper(), request.To.ToUpper(), request.Amount));
             var results = await Task.WhenAll(tasks);
 
             var response = results
@@ -42,7 +42,7 @@ namespace CentralApi.Core.Application.Services
 
             var tasks = requests.Select(async request =>
             {
-                var providerTasks = _providers.Select(p => p.GetExchangeRateAsync(request.From, request.To, request.Amount));
+                var providerTasks = _providers.Select(p => p.GetExchangeRateAsync(request.From.ToUpper(), request.To.ToUpper(), request.Amount));
                 var providerResults = await Task.WhenAll(providerTasks);
 
                 var bestRate = providerResults
@@ -78,7 +78,7 @@ namespace CentralApi.Core.Application.Services
 
         public async Task<GenericResponse<List<ExchangeResults?>>> GetRatesAsync(ExchangeRequest request)
         {
-            var tasks = _providers.Select(p => p.GetExchangeRateAsync(request.From, request.To, request.Amount));
+            var tasks = _providers.Select(p => p.GetExchangeRateAsync(request.From.ToUpper(), request.To.ToUpper(), request.Amount));
             var results = await Task.WhenAll(tasks);
 
             var response = results
