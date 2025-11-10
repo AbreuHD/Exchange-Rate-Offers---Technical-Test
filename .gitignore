@@ -366,3 +366,4 @@ FodyWeavers.xsd
 docker-compose.override.yml
 .docker/
 *.dockerignore.bak
+/exchange-rate-offers-all.tar
