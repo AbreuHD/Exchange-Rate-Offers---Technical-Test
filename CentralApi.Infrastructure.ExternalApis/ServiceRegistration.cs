@@ -1,10 +1,10 @@
-﻿using Core.Application.Services;
-using Core.Domain.Interfaces;
-using Infrastructure.ExternalApis.ModularServices;
+﻿using CentralApi.Core.Application.Services;
+using CentralApi.Core.Domain.Interfaces;
+using CentralApi.Infrastructure.ExternalApis.ModularServices;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Infrastructure.ExternalApis
+namespace CentralApi.Infrastructure.ExternalApis
 {
     public static class ServiceRegistration
     {

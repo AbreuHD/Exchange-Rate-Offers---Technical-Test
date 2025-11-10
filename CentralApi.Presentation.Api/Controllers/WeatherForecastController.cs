@@ -1,6 +1,7 @@
+using CentralApi.Presentation.Api;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Presentation.Api.Controllers
+namespace CentralApi.Presentation.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]

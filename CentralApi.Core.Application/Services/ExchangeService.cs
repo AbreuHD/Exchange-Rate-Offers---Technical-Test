@@ -1,8 +1,8 @@
-﻿using Core.Domain.Common;
-using Core.Domain.Entities;
-using Core.Domain.Interfaces;
+﻿using CentralApi.Core.Domain.Common;
+using CentralApi.Core.Domain.Entities;
+using CentralApi.Core.Domain.Interfaces;
 
-namespace Core.Application.Services
+namespace CentralApi.Core.Application.Services
 {
     public class ExchangeService(IEnumerable<IExchangeProvider> providers) : IExchangeService
     {

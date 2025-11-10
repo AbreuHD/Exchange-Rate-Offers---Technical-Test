@@ -1,28 +1,28 @@
-﻿using Core.Domain.Common;
-using Core.Domain.Entities;
-using Core.Domain.Interfaces;
+﻿using CentralApi.Core.Domain.Common;
+using CentralApi.Core.Domain.Entities;
+using CentralApi.Core.Domain.Interfaces;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
 
-namespace Infrastructure.ExternalApis.ModularServices
+namespace CentralApi.Infrastructure.ExternalApis.ModularServices
 {
-    public class FrankfurterService(HttpClient httpClient, ILogger<FrankfurterService> logger) : IExchangeProvider
+    public class ThirdApiService(HttpClient httpClient, ILogger<ThirdApiService> logger) : IExchangeProvider
     {
         private readonly HttpClient _httpClient = httpClient;
-        private readonly ILogger<FrankfurterService> _logger = logger;
+        private readonly ILogger<ThirdApiService> _logger = logger;
 
         public async Task<GenericResponse<ExchangeResults?>> GetExchangeRateAsync(string from, string to, decimal amount)
         {
             try
             {
-                var apiResponse = await _httpClient.GetAsync($"/latest?from={from}&to={to}");
+                var apiResponse = await _httpClient.GetAsync($"api/exchange/Change?From={from}&To={to}");
 
                 if (!apiResponse.IsSuccessStatusCode)
                 {
-                    _logger.LogWarning("FrankfurterService returned non-success status: {StatusCode}", apiResponse.StatusCode);
+                    _logger.LogWarning("ThirdApiService returned non-success status: {StatusCode}", apiResponse.StatusCode);
                     return new GenericResponse<ExchangeResults?>
                     {
-                        Message = "Failed to retrieve exchange rate from FrankfurterService.",
+                        Message = "Failed to retrieve exchange rate from ThirdApiService.",
                         Statuscode = (int)apiResponse.StatusCode,
                         Payload = null
                     };
@@ -30,12 +30,12 @@ namespace Infrastructure.ExternalApis.ModularServices
 
                 var data = await apiResponse.Content.ReadFromJsonAsync<ExchangeApiResponse>();
 
-                if (data == null || !data.Rates.TryGetValue(to, out var rate))
+                if (data == null)
                 {
-                    _logger.LogWarning("FrankfurterService returned an invalid JSON structure or missing rate.");
+                    _logger.LogWarning("ThirdApiService returned an invalid JSON structure or missing rate.");
                     return new GenericResponse<ExchangeResults?>
                     {
-                        Message = "Invalid response structure from FrankfurterService.",
+                        Message = "Invalid response structure from ThirdApiService.",
                         Statuscode = 500,
                         Payload = null
                     };
@@ -46,9 +46,9 @@ namespace Infrastructure.ExternalApis.ModularServices
                     Payload = new ExchangeResults
                     {
                         ExchangePair = $"{from}/{to}",
-                        ProviderName = "FrankfurterService",
-                        Rate = rate,
-                        ConvertedAmount = amount * rate
+                        ProviderName = "ThirdApiService",
+                        Rate = data.ExchangeRate,
+                        ConvertedAmount = data.ConvertedAmount
                     },
                     Statuscode = 200,
                     Message = "Success"
@@ -56,10 +56,10 @@ namespace Infrastructure.ExternalApis.ModularServices
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error while calling FrankfurterService.");
+                _logger.LogError(ex, "Error while calling ThirdApiService.");
                 return new GenericResponse<ExchangeResults?>
                 {
-                    Message = "An error occurred while retrieving exchange rate from FrankfurterService.",
+                    Message = "An error occurred while retrieving exchange rate from ThirdApiService.",
                     Statuscode = 500,
                     Payload = null
                 };
@@ -67,10 +67,11 @@ namespace Infrastructure.ExternalApis.ModularServices
         }
         private sealed class ExchangeApiResponse
         {
-            public decimal Amount { get; set; }
-            public string Base { get; set; } = string.Empty;
-            public string Date { get; set; } = string.Empty;
-            public Dictionary<string, decimal> Rates { get; set; } = [];
+            public long StatusCode { get; set; }
+            public string From { get; set; }
+            public string To { get; set; }
+            public decimal ExchangeRate { get; set; }
+            public decimal ConvertedAmount { get; set; }
         }
     }
 }

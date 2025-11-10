@@ -1,10 +1,10 @@
-﻿using Core.Domain.Common;
-using Core.Domain.Entities;
-using Core.Domain.Interfaces;
+﻿using CentralApi.Core.Domain.Common;
+using CentralApi.Core.Domain.Entities;
+using CentralApi.Core.Domain.Interfaces;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
 
-namespace Infrastructure.ExternalApis.ModularServices
+namespace CentralApi.Infrastructure.ExternalApis.ModularServices
 {
     public class FirstApiService(HttpClient httpClient, ILogger<FirstApiService> logger) : IExchangeProvider
     {

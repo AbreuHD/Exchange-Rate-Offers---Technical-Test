@@ -1,7 +1,7 @@
-﻿using Core.Domain.Common;
-using Core.Domain.Entities;
+﻿using CentralApi.Core.Domain.Common;
+using CentralApi.Core.Domain.Entities;
 
-namespace Core.Domain.Interfaces
+namespace CentralApi.Core.Domain.Interfaces
 {
     public interface IExchangeProvider
     {

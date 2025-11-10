@@ -1,4 +1,4 @@
-namespace Presentation.Api
+namespace CentralApi.Presentation.Api
 {
     public class WeatherForecast
     {

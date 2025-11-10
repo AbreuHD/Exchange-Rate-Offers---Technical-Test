@@ -1,4 +1,4 @@
-﻿namespace Core.Domain.Entities
+﻿namespace CentralApi.Core.Domain.Entities
 {
     public class ExchangeResults
     {

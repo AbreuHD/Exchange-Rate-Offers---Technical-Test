@@ -1,14 +1,14 @@
 <Solution>
   <Folder Name="/CentralApi/" />
   <Folder Name="/CentralApi/CentralApi.Core/">
-    <Project Path="Core.Application/CentralApi.Core.Application.csproj" Id="b101b6b3-c690-473a-9f19-e8e513eaa86e" />
-    <Project Path="Core.Domain/CentralApi.Core.Domain.csproj" Id="30f71543-5001-4a05-88c6-975aa90dea7c" />
+    <Project Path="CentralApi.Core.Application/CentralApi.Core.Application.csproj" Id="b101b6b3-c690-473a-9f19-e8e513eaa86e" />
+    <Project Path="CentralApi.Core.Domain/CentralApi.Core.Domain.csproj" Id="30f71543-5001-4a05-88c6-975aa90dea7c" />
   </Folder>
   <Folder Name="/CentralApi/CentralApi.Infrastructure/">
-    <Project Path="Infrastructure.ExternalApis/CentralApi.Infrastructure.ExternalApis.csproj" />
+    <Project Path="CentralApi.Infrastructure.ExternalApis/CentralApi.Infrastructure.ExternalApis.csproj" />
   </Folder>
   <Folder Name="/CentralApi/CentralApi.Presentation/">
-    <Project Path="Presentation.Api/CentralApi.Presentation.Api.csproj" Id="950bc742-a18b-4131-8e97-5f09edbc65e8" />
+    <Project Path="CentralApi.Presentation.Api/CentralApi.Presentation.Api.csproj" Id="950bc742-a18b-4131-8e97-5f09edbc65e8" />
   </Folder>
   <Folder Name="/CentralApi/CentralApi.Tests/">
     <Project Path="CentralApi.Test/CentralApi.Test.csproj" Id="beeb32e2-8cc4-4a1c-881f-e5d138759804" />

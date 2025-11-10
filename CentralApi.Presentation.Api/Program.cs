@@ -1,4 +1,4 @@
-﻿using Infrastructure.ExternalApis;
+﻿using CentralApi.Infrastructure.ExternalApis;
 
 var builder = WebApplication.CreateBuilder(args);
 

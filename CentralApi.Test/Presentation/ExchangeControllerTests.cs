@@ -1,10 +1,10 @@
-using Core.Domain.Common;
-using Core.Domain.Entities;
-using Core.Domain.Interfaces;
+using CentralApi.Core.Domain.Common;
+using CentralApi.Core.Domain.Entities;
+using CentralApi.Core.Domain.Interfaces;
+using CentralApi.Presentation.Api.Controllers;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Presentation.Api.Controllers;
 
 namespace CentralApi.Test.Presentation
 {

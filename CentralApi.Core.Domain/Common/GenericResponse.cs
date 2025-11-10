@@ -1,4 +1,4 @@
-﻿namespace Core.Domain.Common
+﻿namespace CentralApi.Core.Domain.Common
 {
     public class GenericResponse<DTO>
     {

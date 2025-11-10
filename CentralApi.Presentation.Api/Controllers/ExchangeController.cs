@@ -1,9 +1,9 @@
-﻿using Core.Domain.Common;
-using Core.Domain.Entities;
-using Core.Domain.Interfaces;
+﻿using CentralApi.Core.Domain.Common;
+using CentralApi.Core.Domain.Entities;
+using CentralApi.Core.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Presentation.Api.Controllers
+namespace CentralApi.Presentation.Api.Controllers
 {
     /// <summary>
     /// Controller responsible for handling exchange rate operations.

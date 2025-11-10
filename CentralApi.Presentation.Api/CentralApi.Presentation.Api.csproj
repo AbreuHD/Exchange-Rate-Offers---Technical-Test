@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CentralApi.Core.Application\CentralApi.Core.Application.csproj" />
+    <ProjectReference Include="..\CentralApi.Infrastructure.ExternalApis\CentralApi.Infrastructure.ExternalApis.csproj" />
+    <ProjectReference Include="..\CentralApi.Core.Application\CentralApi.Core.Application.csproj" />
+    <ProjectReference Include="..\CentralApi.Infrastructure.ExternalApis\CentralApi.Infrastructure.ExternalApis.csproj" />
+  </ItemGroup>
+
+</Project>
